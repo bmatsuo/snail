@@ -20,7 +20,7 @@ func main() {
     MakeSnailMatrix(opt.n).Print()
 }
 
-//  A matrix with entries increasing in a spiralling order.
+//  A matrix with entries increasing in a contracting spiral.
 type SnailMatrix [][]int
 
 //  Create and initialize an n by n snail matrix.
@@ -29,7 +29,7 @@ func MakeSnailMatrix(n int) SnailMatrix {
     for i, _ := range m {
         m[i] = make([]int, n)
     }
-    SnailDo(n, func(s *Snail) { m[s.i][s.j] = s.count })
+    SnailDo(n, func(s *Snail) { m[s.I][s.J] = s.Count })
     return m
 }
 
@@ -49,11 +49,11 @@ func (m SnailMatrix) numWidth() int {
     return int(math.Ceil(math.Log10(float64(n*n))-0.5)) + 2
 }
 
-//  Walks around a snail matrix using the pattern in side lengths;
+//  Walks around a snail matrix expoiting the pattern in side lengths;
 //  n, n, n, n-1, n-1, n-2, n-2, ..., 2, 2, 1, 1
 type Snail struct {
     dir                            Direction
-    n, i, j, count, rem, rep, side int
+    N, I, J, Count, rem, rep, side int
 }
 
 //  Execute a function at each point walking around a snail matrix.
@@ -65,7 +65,7 @@ func SnailDo(n int, f func(*Snail)) {
 
 func newSnail(n int) *Snail {
     s := new(Snail)
-    *s = Snail{n: n, count: 1, rem: n - 1, rep: -1, side: n - 1}
+    *s = Snail{N: n, Count: 1, rem: n - 1, rep: -1, side: n - 1}
     return s
 }
 
@@ -84,17 +84,17 @@ func (s *Snail) walk() {
     // Move
     switch s.dir {
     case Up:
-        s.i--
+        s.I--
     case Down:
-        s.i++
+        s.I++
     case Left:
-        s.j--
+        s.J--
     case Right:
-        s.j++
+        s.J++
     }
     // Count
     s.rem--
-    s.count++
+    s.Count++
 }
 
 type Direction int
