@@ -27,17 +27,12 @@ func MakeSnailMatrix(n int) SnailMatrix {
     for i, _ := range m {
         m[i] = make([]int, n)
     }
-
-    for s := NewSnail(n); s.side > 0; s.Walk() {
-        m[s.i][s.j] = s.count
-    }
+    SnailDo(n, func(s *Snail) { m[s.i][s.j] = s.count })
     return m
 }
 
 func (m SnailMatrix) Print() {
-    n := len(m)
-    width := int(math.Ceil(math.Log10(float64(n*n))-0.5)) + 2
-    elmf := fmt.Sprintf("%%%dd", width)
+    elmf := fmt.Sprintf("%%%dd", m.FormatWidth())
     for _, row := range m {
         for _, elm := range row {
             fmt.Printf(elmf, elm)
@@ -46,9 +41,23 @@ func (m SnailMatrix) Print() {
     }
 }
 
+func (m SnailMatrix) FormatWidth() int {
+    n := len(m)
+    return int(math.Ceil(math.Log10(float64(n*n))-0.5)) + 2
+}
+
+//  Walks around a snail matrix using the pattern in side lengths;
+//  n, n, n, n-1, n-1, n-2, n-2, ..., 2, 2, 1, 1
 type Snail struct {
     dir                            Direction
     n, i, j, count, rem, rep, side int
+}
+
+//  Execute a function at each point walking around a snail matrix.
+func SnailDo(n int, f func(*Snail)) {
+    for s := NewSnail(n); !s.Done(); s.Walk() {
+        f(s)
+    }
 }
 
 func NewSnail(n int) *Snail {
@@ -57,9 +66,11 @@ func NewSnail(n int) *Snail {
     return s
 }
 
+func (s *Snail) Done() bool { return s.side == 0 }
+
 func (s *Snail) Walk() {
-    // Turn
     if s.rem == 0 {
+        // Turn
         if s.rep++; s.rep == 2 {
             s.side--
             s.rep = 0
@@ -78,6 +89,7 @@ func (s *Snail) Walk() {
     case Right:
         s.j++
     }
+    // Count
     s.rem--
     s.count++
 }
