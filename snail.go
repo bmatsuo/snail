@@ -50,7 +50,7 @@ func (m SnailMatrix) numWidth() int {
 }
 
 //  Walks around a snail matrix expoiting the pattern in side lengths;
-//  n, n, n, n-1, n-1, n-2, n-2, ..., 2, 2, 1, 1
+//  N, N, N, N-1, N-1, N-2, N-2, ..., 2, 2, 1, 1
 type Snail struct {
     dir                            Direction
     N, I, J, Count, rem, rep, side int
