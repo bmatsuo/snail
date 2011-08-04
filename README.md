@@ -1,9 +1,9 @@
-*snail version 0.0_1*
+*snail version 0.0_2*
 
 About snail
 =============
 
-
+Command snail prints a "snail matrix" to its standard output stream.
 
 Dependencies
 =============
@@ -17,7 +17,24 @@ Usage
 
 Run snail with the command
 
-    snail [options]
+    snail [-n=N]
+
+Options
+-------
+
+    -n=N (Default: 5)
+            Create an NxN snail matrix.
+
+Example
+-------
+
+    $ snail -n 4
+      1  2  3  4
+     12 13 14  5
+     11 16 15  6
+     10  9  8  7
+    $
+
 
 Installation
 -------------
