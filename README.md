@@ -4,7 +4,7 @@ About snail
 =============
 
 Command snail prints a "snail matrix" to its standard output stream.
-Inspired by the [blog post by Allister Sanchez]{http://hackgolang.blogspot.com/2010/09/snail-in-golang.html}
+Inspired by the [blog post by Allister Sanchez|(http://hackgolang.blogspot.com/2010/09/snail-in-golang.html)
 
 Dependencies
 =============
