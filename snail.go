@@ -20,8 +20,10 @@ func main() {
     MakeSnailMatrix(opt.n).Print()
 }
 
+//  A matrix with entries increasing in a spiralling order.
 type SnailMatrix [][]int
 
+//  Create and initialize an n by n snail matrix.
 func MakeSnailMatrix(n int) SnailMatrix {
     m := make(SnailMatrix, n)
     for i, _ := range m {
@@ -31,6 +33,7 @@ func MakeSnailMatrix(n int) SnailMatrix {
     return m
 }
 
+//  Print the matrix with aligned columns to standard out.
 func (m SnailMatrix) Print() {
     elmf := fmt.Sprintf("%%%dd", m.numWidth())
     for _, row := range m {
@@ -103,4 +106,5 @@ const (
     Up
 )
 
+//  Return the direction clockwise of d.
 func (d Direction) Rotate() Direction { return (d + 1) % 4 }
