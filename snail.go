@@ -35,19 +35,50 @@ func MakeSnailMatrix(n int) SnailMatrix {
 
 //  Print the matrix with aligned columns to standard out.
 func (m SnailMatrix) Print() {
-    elmf := fmt.Sprintf("%%%dd", m.numWidth())
+    formats := m.rowFormats()
     for _, row := range m {
-        for _, elm := range row {
-            fmt.Printf(elmf, elm)
+        for j, elm := range row {
+            fmt.Printf(formats[j], elm)
         }
         fmt.Println()
     }
 }
 
-func (m SnailMatrix) numWidth() int {
-    n := len(m)
-    return int(math.Ceil(math.Log10(float64(n*n))-0.5)) + 2
+//  Return the length of one side of m.
+func (m SnailMatrix) Size() int { return len(m) }
+
+//  Return a slice containing m.Size() integer format strings.
+func (m SnailMatrix) rowFormats() []string {
+    formats := []string{
+        fmt.Sprintf("%%%dd", m.numWidth()-m.leftGap()),
+        fmt.Sprintf("%%%dd", m.numWidth())}
+    for i := 0; i < m.Size()-2; i++ {
+        formats = append(formats, formats[len(formats)-1])
+    }
+    return formats
 }
+
+//  The base width with which to format numbers.
+func (m SnailMatrix) numWidth() int {
+    n := m.Size()
+    return width(n * n)
+}
+
+//  The largest value on the left side of the matrix.
+func (m SnailMatrix) largestLeft() int {
+    if n := m.Size(); n > 1 {
+        return 4*n - 3 - 1
+    }
+    return 1
+}
+
+// The size of the gap on the left column of width m.numWidth().
+func (m SnailMatrix) leftGap() int {
+    return m.numWidth() - width(m.largestLeft()) + 1
+}
+
+//  Return the number of decimal digits needed for x plus 1 for padding.
+func width(x int) int { return int(math.Log10(float64(x))) + 2 }
 
 //  Walks around a snail matrix expoiting the pattern in side lengths;
 //  N, N, N, N-1, N-1, N-2, N-2, ..., 2, 2, 1, 1
@@ -58,6 +89,10 @@ type Snail struct {
 
 //  Execute a function at each point walking around a snail matrix.
 func SnailDo(n int, f func(*Snail)) {
+    if n == 1 {
+        f(newSnail(1))
+        return
+    }
     for s := newSnail(n); !s.done(); s.walk() {
         f(s)
     }
