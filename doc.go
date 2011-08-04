@@ -2,8 +2,8 @@
  *  Filename:    doc.go
  *  Author:      Bryan Matsuo <bmatsuo@soe.ucsc.edu>
  *  Created:     Wed Aug  3 22:17:18 PDT 2011
- *  Description: 
- *  Usage:       snail [-n=N]
+ *  Description: Documentation for snail
+ *  Usage:       godoc github.com/bmatsuo/snail
  */
 
 /*

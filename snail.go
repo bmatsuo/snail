@@ -8,7 +8,7 @@ package main
  *  Author:      Bryan Matsuo <bmatsuo@soe.ucsc.edu>
  *  Created:     Wed Aug  3 22:17:18 PDT 2011
  *  Description: Print a snail matrix to standard output.
- *  Usage:       snail -n MATRIXSIZE
+ *  Usage:       snail [-n=N]
  */
 import (
     "math"
@@ -32,7 +32,7 @@ func MakeSnailMatrix(n int) SnailMatrix {
 }
 
 func (m SnailMatrix) Print() {
-    elmf := fmt.Sprintf("%%%dd", m.FormatWidth())
+    elmf := fmt.Sprintf("%%%dd", m.numWidth())
     for _, row := range m {
         for _, elm := range row {
             fmt.Printf(elmf, elm)
@@ -41,7 +41,7 @@ func (m SnailMatrix) Print() {
     }
 }
 
-func (m SnailMatrix) FormatWidth() int {
+func (m SnailMatrix) numWidth() int {
     n := len(m)
     return int(math.Ceil(math.Log10(float64(n*n))-0.5)) + 2
 }
@@ -55,20 +55,20 @@ type Snail struct {
 
 //  Execute a function at each point walking around a snail matrix.
 func SnailDo(n int, f func(*Snail)) {
-    for s := NewSnail(n); !s.Done(); s.Walk() {
+    for s := newSnail(n); !s.done(); s.walk() {
         f(s)
     }
 }
 
-func NewSnail(n int) *Snail {
+func newSnail(n int) *Snail {
     s := new(Snail)
     *s = Snail{n: n, count: 1, rem: n - 1, rep: -1, side: n - 1}
     return s
 }
 
-func (s *Snail) Done() bool { return s.side == 0 }
+func (s *Snail) done() bool { return s.side == 0 }
 
-func (s *Snail) Walk() {
+func (s *Snail) walk() {
     if s.rem == 0 {
         // Turn
         if s.rep++; s.rep == 2 {
