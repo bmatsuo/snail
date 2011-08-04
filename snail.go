@@ -20,7 +20,7 @@ func main() {
     MakeSnailMatrix(opt.n).Print()
 }
 
-//  A matrix with entries increasing in a contracting spiral.
+//  A matrix with increasing entries in a contracting spiral.
 type SnailMatrix [][]int
 
 //  Create and initialize an n by n snail matrix.
@@ -64,17 +64,13 @@ func (m SnailMatrix) numWidth() int {
     return width(n * n)
 }
 
-//  The largest value on the left side of the matrix.
-func (m SnailMatrix) largestLeft() int {
-    if n := m.Size(); n > 1 {
-        return 4*n - 3 - 1
-    }
-    return 1
-}
-
 // The size of the gap on the left column of width m.numWidth().
 func (m SnailMatrix) leftGap() int {
-    return m.numWidth() - width(m.largestLeft()) + 1
+    largestLeft := 1
+    if n := m.Size(); n > 1 {
+        largestLeft = 4*n - 3 - 1
+    }
+    return m.numWidth() - width(largestLeft) + 1
 }
 
 //  Return the number of decimal digits needed for x plus 1 for padding.
