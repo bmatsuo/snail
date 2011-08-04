@@ -16,7 +16,7 @@ import (
 )
 
 func main() {
-    ParseFlags()
+    parseFlags()
     MakeSnailMatrix(opt.n).Print()
 }
 
