@@ -17,6 +17,8 @@ type options struct {
 
 var opt = options{}
 
+func init() { parseFlags() }
+
 func setupFlags() *flag.FlagSet {
     var fs = flag.NewFlagSet("snail", flag.ExitOnError)
     fs.IntVar(&(opt.n), "n", 5, "Specify snail dimensions (n x n).")
